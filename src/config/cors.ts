@@ -9,7 +9,7 @@ export const corsConfig: CorsOptions = {
         if (whitelist.includes(origin)) {
             callback(null, true)
         }else{
-            callback(new Error('Error de Cors'))
+            callback(new Error('Error de Cors Intente Un Dminio Permitido'))
         }
     }
 }
