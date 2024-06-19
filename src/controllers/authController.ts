@@ -78,7 +78,7 @@ export class AuthController {
 
             if (!user.confirmed) {
                 const token = new Token
-                token.user = user._id
+                token.user = user.id
                 token.token = generateToken()
                 await token.save()
                 //Enviar el email
@@ -123,7 +123,7 @@ export class AuthController {
             //Generar el token
             const token = new Token()
             token.token = generateToken()
-            token.user = user._id
+            token.user = user.id
 
 
             //Enviar el email
@@ -154,7 +154,7 @@ export class AuthController {
             //Generar el token
             const token = new Token()
             token.token = generateToken()
-            token.user = user._id
+            token.user = user.id
             await token.save()
 
             //Enviar el email
@@ -211,7 +211,7 @@ export class AuthController {
     static updateProfile = async (req: Request, res: Response) => {
         const { name, email } = req.body
         const userExist = await User.findOne({ email })
-        if (userExist && userExist._id.toString() !== req.user._id.toString()) {
+        if (userExist && userExist.id.toString() !== req.user.id.toString()) {
             const error = new Error('El email ya esta registrado')
             return res.status(409).json({ error: error.message })
         }
@@ -226,7 +226,7 @@ export class AuthController {
     }
     static updateCurrentUserPassword = async (req: Request, res: Response) => {
         const { current_password, password } = req.body
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(req.user.id)
         const isPasswordCorrect = await checkPassword(current_password, user.password)
         if (!isPasswordCorrect) {
             const error = new Error('El password actual es incorrecto')
@@ -243,7 +243,7 @@ export class AuthController {
 
     static checkPassword = async (req: Request, res: Response) => {
         const { password } = req.body
-        const user = await User.findById(req.user._id)
+        const user = await User.findById(req.user.id)
         const isPasswordCorrect = await checkPassword(password, user.password)
         if (!isPasswordCorrect) {
             const error = new Error('El password es incorrecto')
